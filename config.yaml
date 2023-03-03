@@ -1,4 +1,4 @@
-baseURL: "https://warman.io/blog"
+baseURL: "http://localhost/blog"
 languageCode: "en-gb"
 title: "Matthew Warman"
 theme: "tale"
