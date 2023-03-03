@@ -152,7 +152,7 @@ The shifts work as follows:
   5. Repeat 2-4 as much as needed
   6. Shift to final output
 
-## Shift `relationships` by there `type` and `id`s
+### Shift `relationships` by there `type` and `id`s
 
 ```json
 {
@@ -625,7 +625,7 @@ Remove data id as key:
 
 A repeatable pattern that is airing on the side of "if all you have is a hammer, everything looks like a nail".
 
-## Full Spec
+### Full Spec
 
 ```json
 [
