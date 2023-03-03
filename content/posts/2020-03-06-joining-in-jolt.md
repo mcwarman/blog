@@ -8,7 +8,7 @@ I stumbled across a question on [stackoverflow][1] that was asking how to perfor
 
 Firstly lets look at the input and outputs:
 
-# Input JSON
+## Input JSON
 
 Contains a data array and relationships array.
 
@@ -79,7 +79,7 @@ Contains a data array and relationships array.
 }
 ```
 
-# Output JSON
+## Output JSON
 
 Which is essentially taking copying the relationships based on type and id.
 
@@ -135,7 +135,7 @@ Which is essentially taking copying the relationships based on type and id.
 }
 ```
 
-# Transformation
+## Transformation
 
 In order to achieve this i wrote a mutli stage shift, the main principle behind it is keying JSON objects on the ID, then copying the object across based on the ID, and shifting back out of it.
 
@@ -222,7 +222,7 @@ The shifts work as follows:
 
 ```
 
-## Shift `data` by `type` `id`
+### Shift `data` by `type` `id`
 
 ```json
 {
@@ -298,7 +298,7 @@ The shifts work as follows:
 }
 ```
 
-## Shift `relationships` for a `type` into `data` by `type` `id`s
+### Shift `relationships` for a `type` into `data` by `type` `id`s
 
 ```json
 {
@@ -368,7 +368,7 @@ The shifts work as follows:
 }
 ```
 
-## Shift `type` into each `data` element key by `data` `id`
+### Shift `type` into each `data` element key by `data` `id`
 
 ```json
 {
@@ -447,9 +447,9 @@ The shifts work as follows:
 
 ```
 
-## Repeat 2-4 as much as needed
+### Repeat 2-4 as much as needed
 
-_The same as above but for publisher_
+_The same as above but for publisher._
 
 ```json
 [
@@ -554,7 +554,7 @@ _The same as above but for publisher_
 }
 ```
 
-## Shift to final output
+### Shift to final output
 
 Remove data id as key:
 
@@ -621,7 +621,7 @@ Remove data id as key:
 }
 ```
 
-# Conclusion
+## Conclusion
 
 A repeatable pattern that is airing on the side of "if all you have is a hammer, everything looks like a nail".
 
