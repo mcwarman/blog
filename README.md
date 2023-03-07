@@ -1,13 +1,21 @@
 # blog
 
-Creating a new post:
+## Tasks
+
+### new-post
+
+Creating a new post.
+
+Inputs: title
 
 ```shell
-hugo new posts/$(date "+%Y-%m-%d")-title-in-kebab-case.md
+hugo new "posts/$(date "+%Y-%m-%d")-${title}.md"
 ```
 
-Testing locally:
+### serve
 
-```shel
+Testing locally.
+
+```shell
 hugo serve
 ```

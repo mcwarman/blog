@@ -3,6 +3,11 @@ languageCode: "en-gb"
 title: "Matthew Warman"
 theme: "tale"
 
+disableKinds:
+  - section
+  - taxonomy
+  - term
+
 permalinks:
   posts: /:year/:month/:title/
 
@@ -18,4 +23,4 @@ markup:
 
 params:
   css:
-    - custom.css
+    - css/custom.css
