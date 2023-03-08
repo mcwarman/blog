@@ -1,5 +1,5 @@
 ---
-title: Fixing Terraform GitHub Actions Workflow
+title: Fixing Automating Terraform with GitHub Actions
 author: Matthew
 date: 2023-03-03T14:47:19Z
 ---
