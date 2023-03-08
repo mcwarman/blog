@@ -45,9 +45,9 @@ on:
   workflow_dispatch:
 ```
 
-### Shared Setup
+### Common Setup
 
-Both of the jobs run the same setup steps.
+Both the [Terraform Plan]({{< relref "#terraform-plan" >}}) and [Terraform Apply]({{< relref "#terraform-apply" >}}) jobs run the same steps during the start.
 
 ```mermaid
 graph LR;
@@ -123,7 +123,7 @@ graph LR;
     ispr{Is PR?} --> |No| upload
     upload[Encrypt & Upload Plan]
 
-    click setup "{{< relref "#shared-setup" >}}"
+    click setup "{{< relref "#common-setup" >}}"
     click format "{{< relref "#terraform-format" >}}"
     click init "{{< relref "#terraform-init" >}}"
     click plan "{{< relref "#terraform-plan-1" >}}"
@@ -297,7 +297,7 @@ graph LR;
     apply[Terraform Apply] --> summary
     summary[Update Git Step Summary]
 
-    click setup "{{< relref "#shared-setup" >}}"
+    click setup "{{< relref "#common-setup" >}}"
     click download "{{< relref "#download--decrypt-plan" >}}"
     click init "{{< relref "#terraform-init-1" >}}"
     click apply "{{< relref "#terraform-apply-1" >}}"
@@ -323,7 +323,7 @@ jobs:
 
 #### Download & Decrypt Plan
 
-The plan is downloaded and decrypted using the passphrase.
+The plan is downloaded and decrypted using the same passphrase from the action repository secret.
 
 ```yaml
 - name: Download Plan
