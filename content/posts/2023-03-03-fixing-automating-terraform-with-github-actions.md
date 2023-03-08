@@ -47,7 +47,7 @@ on:
 
 ### Common Setup
 
-Both the [Terraform Plan]({{< relref "#terraform-plan" >}}) and [Terraform Apply]({{< relref "#terraform-apply" >}}) jobs run the same steps during the start.
+Both the [Terraform Plan]({{< relref "#terraform-plan" >}}) and [Terraform Apply]({{< relref "#terraform-apply" >}}) jobs run the same steps to begin with.
 
 ```mermaid
 graph LR;
