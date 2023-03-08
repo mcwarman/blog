@@ -1,8 +1,7 @@
 ---
-title:  "Docker Shell Command"
-author: "Matthew"
+title:  Docker Shell Command
+author: Matthew
 date: 2018-01-23
-excerpt_separator: <!--more-->
 ---
 
 After adding docker to my utility belt, I haven't looked back. One thing i often find myself needing to do is execute a bash session against my container.<!--more-->

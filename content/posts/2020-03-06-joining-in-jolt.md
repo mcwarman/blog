@@ -1,6 +1,6 @@
 ---
-title:  "Joining in Jolt"
-author: "Matthew"
+title:  Joining in Jolt
+author: Matthew
 date: 2020-03-06
 ---
 
