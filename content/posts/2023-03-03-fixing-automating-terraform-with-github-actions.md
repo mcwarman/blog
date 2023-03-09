@@ -23,7 +23,7 @@ The _Interactive Approval of Plans_ is possible using a combination of GitHub Ac
 The workflow is built up of two jobs with dependency on each other:
 
 ```mermaid
-graph LR;
+graph TD;
     plan[Terraform Plan] --> apply[Terraform Apply]
 
     click plan "{{< relref "#terraform-plan" >}}"
@@ -50,7 +50,7 @@ on:
 Both the [Terraform Plan]({{< relref "#terraform-plan" >}}) and [Terraform Apply]({{< relref "#terraform-apply" >}}) jobs run the same steps to begin with.
 
 ```mermaid
-graph LR;
+graph TD;
     checkout[Checkout] --> setup
     setup[Setup Terraform] --> config_cache
     config_cache[Configure Terraform Provider Plugin Cache] --> cache
@@ -112,7 +112,7 @@ Restores the cache if available, the cache is keyed on the lock file hash. But t
 The Terraform Plan job is responsible for creating the plan, updating the summary, and updating the PR or uploading the plan.
 
 ```mermaid
-graph LR;
+graph TD;
     setup[Setup] --> format
     format[Terraform Format] --> init
     init[Terraform Init] --> plan
@@ -290,7 +290,7 @@ The `if` ensures that the job is only executed on the default branch on either `
 The Terraform Apply job is responsible for downloading the plan, applying it, and updating the summary.
 
 ```mermaid
-graph LR;
+graph TD;
     setup[Setup] --> download
     download[Download & Decrypt Plan] --> init
     init[Terraform Init] --> apply

@@ -3,12 +3,14 @@
   <script>
     primaryTextColor = getComputedStyle(document.documentElement).getPropertyValue('--default-color').trim()
     primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--grey-4').trim()
+    lineColor = getComputedStyle(document.documentElement).getPropertyValue('--default-tint').trim()
     mermaid.initialize({
       startOnLoad: true,
       theme: 'base',
       themeVariables: {
         primaryTextColor: primaryTextColor,
-        primaryColor: primaryColor
+        primaryColor: primaryColor,
+        lineColor: lineColor
       }
     });
   </script>
