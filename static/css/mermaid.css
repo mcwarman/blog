@@ -1,0 +1,27 @@
+.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0px 25px 0px;
+}
+
+.mermaid .node rect,
+.mermaid .node polygon {
+  fill: var(--grey-4) !important;
+  stroke: var(--default-tint) !important;
+}
+
+.mermaid .nodeLabel,
+.mermaid .edgeLabel {
+  color: var(--default-color) !important;
+}
+
+.mermaid .flowchart-link {
+  stroke: var(--default-tint) !important;
+}
+.mermaid .marker {
+  fill: var(--default-tint) !important;
+}
+
+.mermaid .edgeLabel {
+  background-color: var(--grey-4) !important;
+}

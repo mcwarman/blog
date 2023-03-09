@@ -24,3 +24,4 @@ markup:
 params:
   css:
     - css/custom.css
+    - css/mermaid.css
