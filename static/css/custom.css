@@ -2,3 +2,9 @@
   max-height: 300px;
   overflow-y: scroll;
 }
+
+figure figcaption {
+  text-align: center;
+  font-size: 75%;
+  font-style: italic;
+}

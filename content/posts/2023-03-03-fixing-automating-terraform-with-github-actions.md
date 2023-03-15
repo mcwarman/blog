@@ -12,9 +12,9 @@ Its a good start but in my opinion it is unusable for production environments as
 
 The way it uses PRs as planning mechanism gives the perception of the _Interactive Approval of Plans_, but once the changes are merged everything is recalculated and the PR plan is discarded. For most scenarios this will _probably_ be fine, but if there is an extended period of time between approval and merge the plan is redundant and _Auto-Approval of Plans_ could have unintended effects on the infrastructure. Reusing the plan will only apply the changes approved.
 
-![review](/blog/images/posts/fixing-automating-terraform-with-github-actions-review.png)
+![review](/blog/images/posts/fixing-automating-terraform-with-github-actions-review.png "Deployment Review")
 
-![plan summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-plan-summary.png)
+![plan summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-plan-summary.png "Summary to Review")
 
 The _Interactive Approval of Plans_ is possible using a combination of GitHub Actions features:
 
@@ -34,7 +34,7 @@ On the configure screen add the required reviewers. This will allow for the plan
 
 Optionally set the allowed deployment branch. and disable admins bypass protection rules.
 
-![protection-rules](/blog/images/posts/fixing-automating-terraform-with-github-actions-protection-rules.png)
+![protection-rules](/blog/images/posts/fixing-automating-terraform-with-github-actions-protection-rules.png "Environment protection rules")
 
 ## Review Actions workflow
 
@@ -237,9 +237,7 @@ The `if success() || failure()` is important, because if any of the earlier step
     } >> "$GITHUB_OUTPUT"
 ```
 
-Example:
-
-![plan summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-plan-summary.png)
+![plan summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-plan-summary.png "Example Plan Summary")
 
 #### Update Pull Request
 
@@ -405,9 +403,7 @@ Again the `if success() || failure()` is important, because if any of the earlie
     } > "$GITHUB_STEP_SUMMARY"
 ```
 
-Example:
-
-![apply summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-apply-summary.png)
+![apply summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-apply-summary.png "Example Apply Summary")
 
 ## Conclusion
 
