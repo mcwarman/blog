@@ -10,6 +10,12 @@ Hashicorp provides a [tutorial](https://developer.hashicorp.com/terraform/tutori
 
 Its a good start but in my opinion it is unusable for production environments as there is no [Interactive Approval of Plans](https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#interactive-approval-of-plans) and instead it uses [Auto-Approval of Plans](https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform#auto-approval-of-plans) something thats discouraged in the Terraform documentation for production environments.
 
+The way it uses PRs as planning mechanism gives the perception of the _Interactive Approval of Plans_, but once the changes are merged everything is recalculated and the PR plan is discarded. For most scenarios this will _probably_ be fine, but if there is an extended period of time between approval and merge the plan is redundant and _Auto-Approval of Plans_ could have unintended effects on the infrastructure. Reusing the plan will only apply the changes approved.
+
+![review](/blog/images/posts/fixing-automating-terraform-with-github-actions-review.png)
+
+![plan summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-plan-summary.png)
+
 The _Interactive Approval of Plans_ is possible using a combination of GitHub Actions features:
 
 - Multiple Jobs with needs to add dependencies between them.
@@ -17,6 +23,18 @@ The _Interactive Approval of Plans_ is possible using a combination of GitHub Ac
 - [Step Summaries](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary) to remove the need to dig into Job Logs to see the plan and apply outcome.
 - [Artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts) for sharing the plan between jobs.
 - [Terraform Provider Plugin Cache](https://developer.hashicorp.com/terraform/cli/config/config-file#provider-plugin-cache) to speed up jobs storing and reusing downloaded plugins.
+
+## Setting Up Repo
+
+### Environment and Protection Rules
+
+In the repository `Settings > Environment`, create a new environment and configure.
+
+On the configure screen add the required reviewers. This will allow for the plan to be checked and approved before applying.
+
+Optionally set the allowed deployment branch. and disable admins bypass protection rules.
+
+![protection-rules](/blog/images/posts/fixing-automating-terraform-with-github-actions-protection-rules.png)
 
 ## Review Actions workflow
 
@@ -208,7 +226,7 @@ The `if success() || failure()` is important, because if any of the earlier step
       printf "#### Terraform Validation :clipboard: \`%s\`\n\n" "${validate_outcome}";
       printf "#### Terraform Plan :book: \`%s\`\n\n" "${plan_outcome}";
       printf "<details><summary>Show Plan</summary>\n\n";
-      printf "\`\`\`\n%s\n\`\`\`\n\n" "${plan_stdout}";
+      printf "\`\`\`\terraformn%s\n\`\`\`\n\n" "${plan_stdout}";
       printf "</details>\n\n";
     } > "$GITHUB_STEP_SUMMARY"
     eof=$(head -c15 /dev/urandom | base64)
@@ -218,6 +236,10 @@ The `if success() || failure()` is important, because if any of the earlier step
       printf "%s\n" "${eof}";
     } >> "$GITHUB_OUTPUT"
 ```
+
+Example:
+
+![plan summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-plan-summary.png)
 
 #### Update Pull Request
 
@@ -309,6 +331,7 @@ The job has a few important settings:
 - An `environment`, the environment is setup in Settings with protection rules and _Required reviewers_ to enable for interactive approval.
 - Has a dependency on the `terraform-plan` using `needs`
 - The `if` ensures that the job is only executed on the default branch on either `push` or `workflow_dispatch` event
+- The `concurrency: cancel-in-progress: true` ensures that only the latest version of the action can run.
 
 ```yaml
 jobs:
@@ -319,6 +342,9 @@ jobs:
     environment: default
     needs: terraform-plan
     if:  github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
+    concurrency:
+      group: ${{ github.ref }}
+      cancel-in-progress: true
 ```
 
 #### Download & Decrypt Plan
@@ -374,10 +400,14 @@ Again the `if success() || failure()` is important, because if any of the earlie
       printf "#### Terraform Initialization :gear: \`%s\`\n\n" "${init_outcome}";
       printf "#### Terraform Apply :rocket: \`%s\`\n\n" "${apply_outcome}";
       printf "<details><summary>Show Outcome</summary>\n\n";
-      printf "\`\`\`\n%s\n\`\`\`\n\n" "${apply_stdout}";
+      printf "\`\`\`terraform\n%s\n\`\`\`\n\n" "${apply_stdout}";
       printf "</details>\n\n";
     } > "$GITHUB_STEP_SUMMARY"
 ```
+
+Example:
+
+![apply summary](/blog/images/posts/fixing-automating-terraform-with-github-actions-apply-summary.png)
 
 ## Conclusion
 
