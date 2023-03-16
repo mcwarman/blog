@@ -1,8 +1,11 @@
-{{ if .Title }}
-  <figure>
-    <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" title="{{.Title}}">
-    <figcaption>{{ .Title }}</figcaption>
-  </figure>
-{{ else }}
-  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
+
+{{ with resources.Get .Destination }}
+  {{ if $.Title }}
+    <figure>
+      <img src="{{ .RelPermalink }}" alt="{{ $.Text }}" title="{{ $.Title }}">
+      <figcaption>{{ $.Title }}</figcaption>
+    </figure>
+  {{ else }}
+    <img src="{{ .RelPermalink }}" alt="{{ $.Text }}">
+  {{ end }}
 {{ end }}
