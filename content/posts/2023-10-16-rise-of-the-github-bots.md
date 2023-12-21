@@ -1,5 +1,5 @@
 ---
-title: Rise of the Bots
+title: Rise of the (GitHub) Bots
 author: Matthew
 date: 2023-10-16T10:06:23+01:00
 ---
