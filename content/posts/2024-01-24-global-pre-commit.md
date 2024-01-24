@@ -8,7 +8,7 @@ I made a mistake when committing to repo recently I was using `terraform plan -g
 
 But this got me thinking I should use `gitleaks` as `pre-commit` hook. And I wondered if I could do this globally. After throwing into google I found a few GitHub issues ([pre-commit#450](https://github.com/pre-commit/pre-commit/issues/450)) and stackoverflow answers ([ref](https://stackoverflow.com/questions/48301280/how-can-i-manually-run-a-git-pre-commit-hook-without-attempting-a-commit)). So bringing them together this is what I came up with.
 
-Firstly I found a command that allows you to test `pre-commit` hooks, This was useful in testing `pre-commit` hooks.:
+Firstly I found a command that allows you to test `pre-commit` hooks, This was useful in testing hooks:
 
 ```shell
 git hook run pre-commit
@@ -61,7 +61,7 @@ repos:
       - id: gitleaks-system
 ```
 
-Testing product this, it ran `gitleaks` first, then the repos `terraform` hooks:
+Testing on existing repo with `pre-commit` setup, it ran `gitleaks` first, then the repos `terraform` hooks:
 
 ```text
 Detect hardcoded secrets.................................................Passed
@@ -70,7 +70,7 @@ Terraform validate with tflint...........................................Passed
 Terraform docs...........................................................Passed
 ```
 
-And re-testing how i failed it would have caught it:
+And re-testing the failure scenario, it would have caught it:
 
 ```text
 Detect hardcoded secrets.................................................Failed
