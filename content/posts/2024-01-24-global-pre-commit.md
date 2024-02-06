@@ -22,9 +22,22 @@ git config --global core.hooksPath ~/.config/git/hooks
 
 What this means is placing a `pre-commit` script into the `~/.config/git/hooks` directory it will be executed on every commit.
 
-When you run `pre-commit install` in repo it creates `.git/hooks/pre-commit` so taking some inspiration from that I created new `pre-commit` script.
+When you run `pre-commit install` in repo it creates `.git/hooks/pre-commit`.
 
-This will run global `pre-commit` config stored in `~/.config/pre-commit/pre-commit-config.yaml`, then run any `pre-commit` config in the repo.
+So taking some inspiration from that I created new `pre-commit` script.
+
+This will:
+
+1. Run global `pre-commit` config stored in `~/.config/pre-commit/pre-commit-config.yaml`
+2. Run any git pre-commit script present `.git/hooks/pre-commit`
+3. Run `pre-commit` if there's `.pre-commit-config.yaml`
+
+This will mean that if you've installed via `pre-commit` it will execute twice, but after uninstalling no more need to install. This is partly due to if you have config `core.hooksPath` set `pre-commit install` will no longer install hooks.
+
+```text
+[ERROR] Cowardly refusing to install hooks with `core.hooksPath` set.
+hint: `git config --unset-all core.hooksPath`
+```
 
 ### `~/.config/git/hooks/pre-commit`
 
@@ -33,21 +46,30 @@ This will run global `pre-commit` config stored in `~/.config/pre-commit/pre-com
 
 set -euo pipefail
 
-args=(hook-impl --config="$HOME/.config/pre-commit/pre-commit-config.yaml" --hook-type=pre-commit)
 hook_dir="$(cd "$(dirname "$0")" && pwd)"
-args+=(--hook-dir "$hook_dir" -- "$@")
+args=(hook-impl --hook-type=pre-commit --hook-dir="$hook_dir")
 
-if type pre-commit &>/dev/null; then
-  pre-commit "${args[@]}"
-else
-  echo 'pre-commit not found.' 1>&2
-  exit 1
+function run-pre-commit() {
+  local configFile="$1"
+  shift
+  if type pre-commit &>/dev/null; then
+    pre-commit "${args[@]}" --config="${configFile}" -- "$@"
+  else
+    echo 'pre-commit not found.' 1>&2
+    exit 1
+  fi
+}
+
+if [ -f "$HOME/.config/pre-commit/pre-commit-config.yaml" ]; then
+  run-pre-commit "$HOME/.config/pre-commit/pre-commit-config.yaml" "$@"
+fi
+
+if [ -f .pre-commit-config.yaml ]; then
+  run-pre-commit .pre-commit-config.yaml "$@"
 fi
 
 if [ -e ./.git/hooks/pre-commit ]; then
   ./.git/hooks/pre-commit "$@"
-else
-  exit 0
 fi
 ```
 
@@ -59,12 +81,13 @@ repos:
     rev: v8.16.1
     hooks:
       - id: gitleaks-system
+        name: gitleaks
 ```
 
-Testing on existing repo with `pre-commit` setup, it ran `gitleaks` first, then the repos `terraform` hooks:
+Testing on existing repo with `.pre-commit-config.yaml`, it ran `gitleaks` first, then the repos `terraform` hooks:
 
 ```text
-Detect hardcoded secrets.................................................Passed
+gitleaks.................................................................Passed
 Terraform fmt............................................................Passed
 Terraform validate with tflint...........................................Passed
 Terraform docs...........................................................Passed
@@ -73,7 +96,7 @@ Terraform docs...........................................................Passed
 And re-testing the failure scenario, it would have caught it:
 
 ```text
-Detect hardcoded secrets.................................................Failed
+gitleaks.................................................................Failed
 - hook id: gitleaks
 - exit code: 1
 
