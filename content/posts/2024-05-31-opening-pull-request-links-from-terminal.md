@@ -61,7 +61,7 @@ Then we can use `www-browser` (which for me is `wslview` under the covers):
 www-browser $(cat .git/pull-request-url);
 ```
 
-Now with the new commands we can turn them into git aliases by wrapping them in shell functions  `f() { ...; }; f` and using `!` as prefix which allows you run external commands in git alias:
+Now with the new commands we can turn them into git aliases by wrapping them in shell functions  `f() { ...; }; f` and using `!` as prefix which allows you to run external commands in git alias:
 
 ```toml
 # ~/.gitconfig
