@@ -70,7 +70,7 @@ Now with the new commands we can turn them into git aliases by wrapping them in 
   pr = "!f() { www-browser $(cat .git/pull-request-url); }; f"
 ```
 
-The end of thew new workflow now looks like this, with the added bonus of working both on GitHub and Bitbucket.
+The end of my new workflow now looks like this, with the added bonus of working both on GitHub and Bitbucket.
 
 ```shell
 git ph
