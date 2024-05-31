@@ -4,7 +4,7 @@ author: Matthew
 date: 2024-05-31T14:47:54+01:00
 ---
 
-Recently I changed roles which meant leaving GitHub behind and using Bitbucket. There's many reason this has made me sad but one of main ones was how reliant my workflow had become on the `gh` CLI.<!--more-->
+Recently I changed roles which meant leaving GitHub behind and using Bitbucket. There's many reason why the Git provider switch made me sad but one of main ones was how reliant my workflow had become on the `gh` CLI.<!--more-->
 
 A colleague and myself have been working on our own Bitbucket PR CLI over at [quotidian-ennui/bitbucket-pr](https://github.com/quotidian-ennui/bitbucket-pr/), but thats another story.
 
@@ -61,7 +61,7 @@ Then we can use `www-browser` (which for me is `wslview` under the covers):
 www-browser $(cat .git/pull-request-url);
 ```
 
-Now with the new commands we can turn them into git aliases by wrapping them in shell functions  `f() { ...; }; f` and using `!` as prefix which allows you run external commands in git alias:
+Now with the new commands we can turn them into git aliases by wrapping them in shell functions  `f() { ...; }; f` and using `!` as prefix which allows you to run external commands in a git alias:
 
 ```toml
 # ~/.gitconfig
